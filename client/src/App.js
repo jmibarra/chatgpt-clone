@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
@@ -12,7 +11,6 @@ function App() {
                 <div className="chat-message">
                     <div className="chat-message-center">
                         <div className="avatar">
-                        
                         </div>
                         <div className="message">
                             Hola mundo
