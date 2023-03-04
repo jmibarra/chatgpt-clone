@@ -13,11 +13,14 @@
     background-color: #202123;
 }
 
-.chatbox{
-    flex: 1;
+.chatbox {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     background-color: #343541;
     position: relative;
-}
+    flex: 1;
+  }
 
 .side-menu-button{
     padding: 12px;
@@ -37,8 +40,9 @@
 }
 
 .chat-input-holder {
+    position: relative;
+    flex-shrink: 0;
     padding: 24px;
-    position: absolute;
     bottom: 0;
     left: 0; right: 0;
 
@@ -57,10 +61,12 @@
     color: white;
 }
 
-.chat-log{
+.chat-log {
     padding: 24px;
+    flex: 1;
     text-align: left;
-}
+    overflow-y: auto;
+  }
 
 .chat-message.chatgpt{
     background-color: #444654;
@@ -122,3 +128,28 @@
     transform: rotate(360deg);
   }
 }
+
+.loading-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .loading-icon i {
+    font-size: 1rem;
+  }
+
+  .fa-spinner {
+    animation: fa-spin 1s infinite linear;
+  }
+  
+  @keyframes fa-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

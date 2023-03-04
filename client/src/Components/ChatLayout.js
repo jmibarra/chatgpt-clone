@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import ChatMessage from './ChatMessage';
+import { FaSpinner } from 'react-icons/fa';
 
 const ChatLayout = () => {
     const [input, setInput] = useState("")
+    const [loading, setLoading] = useState(false)
     const [chatLog, setChatLog] = useState([{
         user: "gpt",
         message: "¿Cómo puedo ayudarte?"
@@ -22,6 +24,7 @@ const ChatLayout = () => {
         let chatLogNew = [...chatLog, { user: "me", message: `${input}` }]
         setInput("");
         setChatLog(chatLogNew);
+        setLoading(true);
 
         const messages = chatLogNew.map((message) => message.message).join("\n")
 
@@ -45,6 +48,8 @@ const ChatLayout = () => {
         } catch (error) {
             console.log(error);
             alert("Ha ocurrido un error al procesar la solicitud");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -61,13 +66,21 @@ const ChatLayout = () => {
                 </div>
                 <div className="chat-input-holder">
                     <form onSubmit={handleSubmit}>
-                        <input
-                            rows="1"
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            className="chat-input-textarea"
-                            placeholder="Type your message here"
-                        ></input>
+                        <div className="input-container">
+                            <input
+                                rows="1"
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                className="chat-input-textarea"
+                                placeholder="Type your message here"
+                                disabled={loading}
+                            />
+                            {loading && (
+                                <div className="spinner-container">
+                                    <FaSpinner className="spinner" />
+                                </div>
+                            )}
+                        </div>
                     </form>
                 </div>
             </section>

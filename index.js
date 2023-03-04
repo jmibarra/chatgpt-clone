@@ -24,15 +24,13 @@ app.post('/', async (req, res) => {
     const { message } = req.body;
 
     try {
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: `${message}`,
-            max_tokens: 100,
-            temperature: 0.5,
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: `${message}` }]
         });
 
         res.json({
-            message: response.data.choices[0].text
+            message: response.data.choices[0].message.content
         });
     } catch (error) {
         console.log(error);
