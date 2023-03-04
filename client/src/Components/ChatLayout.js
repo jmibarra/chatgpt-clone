@@ -25,18 +25,27 @@ const ChatLayout = () => {
 
         const messages = chatLogNew.map((message) => message.message).join("\n")
 
-        const response = await fetch("http://localhost:3080/", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify({
-                message: messages
+        try {
+            const response = await fetch("http://localhost:3080/", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: messages
+                })
             })
-        })
 
-        const data = await response.json();
-        setChatLog([...chatLogNew, { user: "gpt", message: `${data.message}` }])
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status} ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            setChatLog([...chatLogNew, { user: "gpt", message: `${data.message}` }])
+        } catch (error) {
+            console.log(error);
+            alert("Ha ocurrido un error al procesar la solicitud");
+        }
     }
 
     return (

@@ -3,7 +3,7 @@ const { Configuration, OpenAIApi } = require("openai");
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { request } = require("express");
+const { request, response } = require("express");
 
 require('dotenv').config();
 
@@ -23,17 +23,25 @@ app.post('/', async (req, res) => {
 
     const { message } = req.body;
 
-    const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: `${message}`,
-        max_tokens: 100,
-        temperature: 0.5,
-    });
+    try {
+        const response = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: `${message}`,
+            max_tokens: 100,
+            temperature: 0.5,
+        });
 
-    res.json({
-        message: response.data.choices[0].text
-    })
+        res.json({
+            message: response.data.choices[0].text
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: `Ha ocurrido un error al procesar la solicitud: Error ${response.status} - ${response.statusText} `
+        });
+    }
 })
+
 
 app.listen(port, () => {
     console.log("Se levanta en el puerto " + port)
