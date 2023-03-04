@@ -24,7 +24,7 @@ const ChatLayout = () => {
         })
 
         const data = await response.json();
-        console.log(data)
+        setChatLog([...chatLog, { user: "gpt", message: `${data.message}` }])
     }
 
     return (
