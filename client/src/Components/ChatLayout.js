@@ -8,10 +8,22 @@ const ChatLayout = () => {
         message: "¿Cómo puedo ayudarte?"
     }])
 
+    function clearChat() {
+        setChatLog([
+            {
+                user: "gpt",
+                message: "¿Cómo puedo ayudarte?"
+            }
+        ])
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
-        setChatLog([...chatLog, { user: "me", message: `${input}` }])
+        let chatLogNew = [...chatLog, { user: "me", message: `${input}` }]
         setInput("");
+        setChatLog(chatLogNew);
+
+        const messages = chatLogNew.map((message) => message.message).join("\n")
 
         const response = await fetch("http://localhost:3080/", {
             method: "POST",
@@ -19,18 +31,18 @@ const ChatLayout = () => {
                 "Content-type": "application/json"
             },
             body: JSON.stringify({
-                message: chatLog.map((message) => message.message).join("")
+                message: messages
             })
         })
 
         const data = await response.json();
-        setChatLog([...chatLog, { user: "gpt", message: `${data.message}` }])
+        setChatLog([...chatLogNew, { user: "gpt", message: `${data.message}` }])
     }
 
     return (
         <div className="App">
             <aside className="sidemenu">
-                <div className="side-menu-button"> <span>+</span>New chat</div>
+                <div className="side-menu-button" onClick={clearChat}> <span>+</span>New chat</div>
             </aside>
             <section className="chatbox">
                 <div className="chat-log">
